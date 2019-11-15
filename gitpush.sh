@@ -1,5 +1,5 @@
 #!/bin/sh
 
-git add *
-git commit -m "assets"
+git add assets/*
+git commit -m "$USER"
 git push
