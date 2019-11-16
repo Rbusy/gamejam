@@ -12,6 +12,7 @@ var searcher = [];
 */
 var cptboucle = 0;
 var cpt = 0;
+
 var hp = 5;
 var hpString;
 var hpText = "HP = ";
@@ -46,13 +47,14 @@ var gameplay = new Phaser.Class({
             Load background image
         */
 
-        this.load.image("testoru", "Salle.png");
+
+        this.load.image("testoru", "assets/Salle.png");
 
         /*
             Load player image
         */
 
-        this.load.spritesheet("dude", "test.png",
+        this.load.spritesheet("dude", "assets/test.png",
         {
             frameWidth: 32,
             frameHeight: 48
@@ -107,6 +109,33 @@ var gameplay = new Phaser.Class({
             Create players animations
         */
        
+        /* 
+            Load patient images
+        */
+
+        this.load.spritesheet("patientDroite", "assets/droite.png",
+        {
+            frameWidth: 200,
+            frameHeight: 280
+        });
+
+        this.load.spritesheet("patientGauche", "assets/gauche.png",
+        {
+            frameWidth: 154,
+            frameHeight: 202
+        });
+        this.load.spritesheet("patientUp", "assets/up.png",
+        {
+            frameWidth: 200,
+            frameHeight: 280
+        });
+        this.load.spritesheet("patientDown", "assets/down.png",
+        {
+            frameWidth: 200,
+            frameHeight: 280
+        });
+
+
         
     },
 
@@ -122,6 +151,89 @@ var gameplay = new Phaser.Class({
             create a cursors to keyboard's input
         */
         this.createDude("dude");
+       /*
+            Create player's character and set his position
+        */
+
+       player = this.physics.add.sprite(config.width / 2, (config.height / 2) + 360 , "dude").setScale(1.5, 1.5);
+
+       /*
+            Create players animations
+        */
+
+        this.anims.create({
+            key: "down",
+            frames: this.anims.generateFrameNumbers("dude", {start: 0, end: 0}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "up",
+            frames: this.anims.generateFrameNumbers("dude", {start: 1, end: 1}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "right",
+            frames: this.anims.generateFrameNumbers("dude", {start: 2, end: 2}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "left",
+            frames: this.anims.generateFrameNumbers("dude", {start: 3, end: 3}),
+            repeat: -1
+        });
+
+        /*
+            Create animation for npc
+        */
+        var patrightAnimation = this.anims.create({
+            key: 'walpatright',
+            frames: this.anims.generateFrameNumbers('patientDroite'),
+            frameRate: 4,
+            repeat: 1
+        });
+
+        var patleftAnimation = this.anims.create({
+            key: 'walpatleft',
+            frames: this.anims.generateFrameNumbers('patientGauche'),
+            frameRate: 12,
+            repeat: 0
+        });
+
+        var patupAnimation = this.anims.create({
+            key: 'walpatup',
+            frames: this.anims.generateFrameNumbers('patientHaut'),
+            frameRate: 4,
+            repeat: 1
+        });
+
+        var patdownAnimation = this.anims.create({
+            key: 'walpatdown',
+            frames: this.anims.generateFrameNumbers('patientBas'),
+            frameRate: 4,
+            repeat: 1
+        });
+
+       /* var sprite = this.add.sprite(300, 300, 'patientGauche').setScale(0.4);
+      
+        sprite.play('walpatleft');
+        sprite.anims.setRepeat(7);
+        
+        
+        this.tweens.add({
+            targets: sprite,
+            x: -650,
+            duration: 4000,
+            ease: 'Linear'
+        });
+    */
+   
+    
+
+
+        /*
+            create a cursors to keyboard's input
+        */
+
         cursors = this.input.keyboard.createCursorKeys();
 
         /*
