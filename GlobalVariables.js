@@ -1,5 +1,5 @@
 
 var myGame = {
     scenes : [],
-    framerate: 10
+    framerate: 8
 }

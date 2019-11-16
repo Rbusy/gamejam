@@ -1,25 +1,12 @@
 
-
 var player;
-var ennemies = [];
-var ennemiesToSpawn = 9;
-var ennemiesLeft = ennemiesToSpawn;
-var ennemiesAreSafe = true;
 
-var hitPoints =5;
-var hitPointsString = "HP: ";
-var hitPointsText;
+var hp;
 
-var score = 0;
-var scoreString = "Score: ";
-var scoreText;
+var hpString;
+var gameStarted = true;
 
-var introText;
-
-
-var gameStarted;
-
-var gameFinish;
+var gameFinish = false;
 
 var gameplay = new Phaser.Class({
     
@@ -31,42 +18,48 @@ var gameplay = new Phaser.Class({
 
     preload: function()
     {
-        this.load.image(
-            "sky","sky.png"
-          );
-        
-          this.load.spritesheet(
-            "dude", "assets/dude.png",
-            {
-                frameWidth: 32,
-                frameHeight: 48
-            }
-        );
-       
-            this.load.spritesheet(
-                "baddie", "assets/baddie.png",
-                {
-                    frameWidth: 32,
-                    frameHeight: 32
-                }
-        );
-          
+        /*
+            Load background image
+        */
+
+        this.load.image("testoru", "Salle.png");
+
+        /*
+            Load player image
+        */
+
+        this.load.spritesheet("dude", "test.png",
+        {
+            frameWidth: 32,
+            frameHeight: 48
+        });
     },
 
     create: function()
     {
-         this.physics.add.sprite(config.width / 2, config.height / 2, "sky");
-         
-         player = this.physics.add.sprite(32, config.height - 150, "dude");
+        /*
+            Create background image
+        */
 
+        var back = this.add.image(config.width/2, config.height/2, 'testoru').setScale(1, 1);
+        
+       /*
+            Create player's character and set his position
+        */
 
-         this.anims.create({
-             key: "left",
-             frames: this.anims.generateFrameNumbers("dude", {start: 0, end: 0}),
-             repeat: -1
-         });
-         this.anims.create({
+       player = this.physics.add.sprite(config.width / 2, (config.height / 2) + 360 , "dude").setScale(1.5, 1.5);
+
+       /*
+            Create players animations
+        */
+
+        this.anims.create({
             key: "down",
+            frames: this.anims.generateFrameNumbers("dude", {start: 0, end: 0}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "up",
             frames: this.anims.generateFrameNumbers("dude", {start: 1, end: 1}),
             repeat: -1
         });
@@ -76,85 +69,23 @@ var gameplay = new Phaser.Class({
             repeat: -1
         });
         this.anims.create({
-            key: "up",
+            key: "left",
             frames: this.anims.generateFrameNumbers("dude", {start: 3, end: 3}),
             repeat: -1
         });
-
-        player.setCollideWorldBounds(true);
+        /*
+            create a cursors to keyboard's input
+        */
 
         cursors = this.input.keyboard.createCursorKeys();
-
-        ennemiesAreSafe = false;
-        
-        ennemies = this.physics.add.staticGroup({
-            key: "baddie",
-            repeat: ennemiesToSpawn
-        });
-
-        ennemies.children.iterate(function(enemy) {
-            enemy.setX(Phaser.Math.FloatBetween(32, config.width - 32));
-            enemy.setY(Phaser.Math.FloatBetween(32, config.height -32));
-
-            if(enemy.x > config.width - 32) {
-                enemy.setX(config.width- 48);
-            }
-            else if (enemy.x < 32)
-                enemy.setX(48);
-
-            if (enemy.y > config.height - 32) {
-                enemy.setY(config.height - 48);
-            }
-            else if (enemy.y < 32){
-                enemy.setY(48);
-            }
-            if (enemy.x == 32 && enemy.y == config.height - 150){
-                enemy.SetX(48);
-            }
-        });
-
-        this.anims.create({
-            key: "safe",
-            frames: this.anims.generateFrameNumbers("baddie", {start: 1, end: 1})
-        });
-
-        this.anims.create({
-            key:"unsafe",
-            frames: this.anims.generateFrameNumbers("baddie", {start: 0, end: 0})
-        });
-
-        ennemies.refresh();
-
-        scoreText = this.add.text(32, 24, scoreString + score);
-        scoreText.visible = false;
-
-        hitPointsText = this.add.text(32, 64, hitPointsString + hitPoints);
-        hitPointsText.visible = false;
-
-        introText = this.add.text(
-            32,
-            24,
-            "clear all baddies when green!"
-        );
-
-        this.input.on("pointerdown", function()
-        {
-            if(!gameStarted) {
-                startGame();
-            }
-        });
-        
-        timedEvent = this.time.addEvent({
-            delay: 1000,
-            callback: switchEnemyState,
-            callbackScope: this,
-            loop: true
-        });
-
-        this.physics.add.overlap(player, ennemies, collideWithEnemy, null, this);
     },
     
     update: function(){
+
+        /*
+            Create player mouvements
+        */
+
         player.setVelocity(0, 0);
         if (gameStarted && !gameFinish) {
             if (cursors.left.isDown) {
@@ -174,75 +105,16 @@ var gameplay = new Phaser.Class({
                 player.anims.play("down");
             }
         }
-       
-        scoreText.setText(scoreString + score);
-        hitPointsText.setText(hitPointsString + hitPoints);
 
-    }
 
+        }
 });
 
-function switchEnemyState() {
-    if (gameStarted && !gameFinish) {
-        if (ennemiesAreSafe == false) {
-            ennemiesAreSafe = true;
-            ennemies.children.iterate(function(enemy)
-            {
-                enemy.anims.play("safe");
-            });
-        } else {
-            ennemiesAreSafe = false;
-            ennemies.children.iterate(function(enemy)
-            {
-                enemy.anims.play("unsafe");
-            });
-        }
-    }
-}
-
-function collideWithEnemy(player, enemy)
-{
-    if (gameStarted && !gameFinish) {
-        if (ennemiesAreSafe == false) {
-            hitPoints--;
-        } else {
-            score++;
-        }
-            enemy.disableBody(true, true);
-            ennemiesLeft--;
-
-            if (hitPoints <= 0){
-                Killgame();
-                introText.setText("game over");
-            }
-            else if (hitPoints > 0 && ennemiesLeft < 0){
-                Killgame();
-                introText.setText("you won");
-            }
-    }
-}
-
-
-
-function startGame() {
-    introText.visible = false;
-    scoreText.visible = true;
-    hitPointsText.visible= true;
-    gameStarted = true;
-    gameFinish = false;
-}
-function Killgame() {
-    gameFinish = true;
-    player.setVelocity(0, 0);
-    introText.visible = true;
-    scoreText.visible = false;
-    hitPointsText.visible = false;
-}
 
 var config = {
     type: Phaser.AUTO,
-    width: 700,
-    height: 600,
+    width: 800,
+    height: 800,
     pixelArt: true,
     physics: {
       default: "arcade",
