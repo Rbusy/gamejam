@@ -45,23 +45,45 @@ var gameplay = new Phaser.Class({
             Load background image
         */
 
-        this.load.image("testoru", "Salle.png");
+        this.load.image("testoru", "assets/Salle.png");
 
         /*
             Load player image
         */
 
-        this.load.spritesheet("dude", "test.png",
+        this.load.spritesheet("dude", "assets/test.png",
         {
             frameWidth: 32,
             frameHeight: 48
         });
 
-        this.load.spritesheet("patientDroite", "droite.png",
+        /* 
+            Load patient images
+        */
+
+        this.load.spritesheet("patientDroite", "assets/droite.png",
         {
             frameWidth: 200,
             frameHeight: 280
         });
+
+        this.load.spritesheet("patientGauche", "assets/gauche.png",
+        {
+            frameWidth: 154,
+            frameHeight: 202
+        });
+        this.load.spritesheet("patientUp", "assets/up.png",
+        {
+            frameWidth: 200,
+            frameHeight: 280
+        });
+        this.load.spritesheet("patientDown", "assets/down.png",
+        {
+            frameWidth: 200,
+            frameHeight: 280
+        });
+
+
         
     },
 
@@ -105,27 +127,51 @@ var gameplay = new Phaser.Class({
         });
 
         /*
-            df
+            Create animation for npc
         */
         var patrightAnimation = this.anims.create({
             key: 'walpatright',
             frames: this.anims.generateFrameNumbers('patientDroite'),
-            frameRate: 8,
+            frameRate: 4,
+            repeat: 1
+        });
+
+        var patleftAnimation = this.anims.create({
+            key: 'walpatleft',
+            frames: this.anims.generateFrameNumbers('patientGauche'),
+            frameRate: 12,
             repeat: 0
         });
 
-        var sprite = this.add.sprite(150, 300, 'patientDroite').setScale(0.4);
+        var patupAnimation = this.anims.create({
+            key: 'walpatup',
+            frames: this.anims.generateFrameNumbers('patientHaut'),
+            frameRate: 4,
+            repeat: 1
+        });
+
+        var patdownAnimation = this.anims.create({
+            key: 'walpatdown',
+            frames: this.anims.generateFrameNumbers('patientBas'),
+            frameRate: 4,
+            repeat: 1
+        });
+
+       /* var sprite = this.add.sprite(300, 300, 'patientGauche').setScale(0.4);
       
-        sprite.play('walpatright');
+        sprite.play('walpatleft');
+        sprite.anims.setRepeat(7);
+        
         
         this.tweens.add({
             targets: sprite,
-            x: 650,
-            duration: 1900,
+            x: -650,
+            duration: 4000,
             ease: 'Linear'
         });
+    */
    
-         
+    
 
 
         /*
