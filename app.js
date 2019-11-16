@@ -30,7 +30,6 @@ var pcText = "PC = ";
 var gameStarted = true;
 var gameFinish = false;
 
-<<<<<<< HEAD
 /*
     var toCollect
 */
@@ -38,8 +37,6 @@ var gameFinish = false;
 var toCollect1;
 var toCollect2;
 var toCollect3;
-=======
->>>>>>> origin/huma-gp
 
 var gameplay = new Phaser.Class({
     
@@ -56,12 +53,9 @@ var gameplay = new Phaser.Class({
         */
 
         this.load.image("testoru", "assets/Salle.png");
-<<<<<<< HEAD
         this.load.image("star", "assets/star.png");
         this.load.image("diamond", "assets/diamond.png");
         this.load.image("mushroom", "assets/mushroom.png");
-=======
->>>>>>> origin/huma-gp
 
         /*
             Load player image
@@ -72,38 +66,6 @@ var gameplay = new Phaser.Class({
             frameWidth: 32,
             frameHeight: 48
         });
-<<<<<<< HEAD
-=======
-
-        /* 
-            Load patient images
-        */
-
-        this.load.spritesheet("patientDroite", "assets/droite.png",
-        {
-            frameWidth: 200,
-            frameHeight: 280
-        });
-
-        this.load.spritesheet("patientGauche", "assets/gauche.png",
-        {
-            frameWidth: 154,
-            frameHeight: 202
-        });
-        this.load.spritesheet("patientUp", "assets/up.png",
-        {
-            frameWidth: 200,
-            frameHeight: 280
-        });
-        this.load.spritesheet("patientDown", "assets/down.png",
-        {
-            frameWidth: 200,
-            frameHeight: 280
-        });
-
-
-        
->>>>>>> origin/huma-gp
     },
 
     create: function()
@@ -113,12 +75,9 @@ var gameplay = new Phaser.Class({
         */
 
         var back = this.add.image(config.width/2, config.height/2, 'testoru').setScale(1, 1);
-<<<<<<< HEAD
         this.toCollect1 = this.physics.add.image(config.width/2 + 100, config.height/2, 'star').setScale(1, 1);
         this.toCollect2 = this.physics.add.image(config.width/2, config.height/2, 'diamond').setScale(1, 1);
         this.toCollect3 = this.physics.add.image(config.width/2 - 100, config.height/2, 'mushroom').setScale(1, 1);
-=======
->>>>>>> origin/huma-gp
         
        /*
             Create player's character and set his position
@@ -150,58 +109,6 @@ var gameplay = new Phaser.Class({
             frames: this.anims.generateFrameNumbers("dude", {start: 3, end: 3}),
             repeat: -1
         });
-<<<<<<< HEAD
-=======
-
-        /*
-            Create animation for npc
-        */
-        var patrightAnimation = this.anims.create({
-            key: 'walpatright',
-            frames: this.anims.generateFrameNumbers('patientDroite'),
-            frameRate: 4,
-            repeat: 1
-        });
-
-        var patleftAnimation = this.anims.create({
-            key: 'walpatleft',
-            frames: this.anims.generateFrameNumbers('patientGauche'),
-            frameRate: 12,
-            repeat: 0
-        });
-
-        var patupAnimation = this.anims.create({
-            key: 'walpatup',
-            frames: this.anims.generateFrameNumbers('patientHaut'),
-            frameRate: 4,
-            repeat: 1
-        });
-
-        var patdownAnimation = this.anims.create({
-            key: 'walpatdown',
-            frames: this.anims.generateFrameNumbers('patientBas'),
-            frameRate: 4,
-            repeat: 1
-        });
-
-       /* var sprite = this.add.sprite(300, 300, 'patientGauche').setScale(0.4);
-      
-        sprite.play('walpatleft');
-        sprite.anims.setRepeat(7);
-        
-        
-        this.tweens.add({
-            targets: sprite,
-            x: -650,
-            duration: 4000,
-            ease: 'Linear'
-        });
-    */
-   
-    
-
-
->>>>>>> origin/huma-gp
         /*
             create a cursors to keyboard's input
         */
@@ -221,24 +128,17 @@ var gameplay = new Phaser.Class({
         pcString = this.add.text(200, 24, pcText + pc,{fontFamily: '"Times New Roman"' });
         pcString.setColor('#ec2000');
 
-<<<<<<< HEAD
         this.physics.add.overlap(player, this.toCollect1, this.collect, null, this);
         this.physics.add.overlap(player, this.toCollect2, this.collect, null, this);
         this.physics.add.overlap(player, this.toCollect3, this.collect, null, this);
         this.player = player;
-=======
->>>>>>> origin/huma-gp
 
     },
     
     update: function(){
 
         /*
-<<<<<<< HEAD
             Create player movements
-=======
-            Create player mouvements
->>>>>>> origin/huma-gp
         */
 
         player.setVelocity(0, 0);
@@ -260,7 +160,6 @@ var gameplay = new Phaser.Class({
                 player.anims.play("down");
             }
         }
-<<<<<<< HEAD
     },
 
     collect: function(player, toCollect){
@@ -270,11 +169,6 @@ var gameplay = new Phaser.Class({
         pcString.setText('PC = ' + pc);
         toCollect.disableBody(true, true);
     }
-=======
-
-
-        }
->>>>>>> origin/huma-gp
 });
 
 
@@ -293,8 +187,4 @@ var config = {
     scene: gameplay
   };
   
-<<<<<<< HEAD
   var game = new Phaser.Game(config);
-=======
-  var game = new Phaser.Game(config);
->>>>>>> origin/huma-gp
