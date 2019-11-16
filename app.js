@@ -1,47 +1,190 @@
+/*
+    var players
+*/
+
+var player;
+var doctor = [];
+var patient = [];
+var searcher = [];
+
+/*
+    var interface
+*/
+
+var hp = 5;
+var hpString;
+var hpText = "HP = ";
+
+var money = 0;
+var moneyString;
+var moneyText = "$ = ";
+
+var pc = 0;
+var pcString;
+var pcText = "PC = ";
+
+/*
+    var gameStat
+*/
+
+var gameStarted = true;
+var gameFinish = false;
+
+/*
+    var toCollect
+*/
+
+var toCollect1;
+var toCollect2;
+var toCollect3;
+
+var gameplay = new Phaser.Class({
+    
+    Extends: Phaser.Scene,
+    
+    initialize: function gameplay(){
+        Phaser.Scene.call(this, { key: "gameplay" });
+    },
+
+    preload: function()
+    {
+        /*
+            Load background image
+        */
+
+        this.load.image("testoru", "assets/Salle.png");
+        this.load.image("star", "assets/star.png");
+        this.load.image("diamond", "assets/diamond.png");
+        this.load.image("mushroom", "assets/mushroom.png");
+
+        /*
+            Load player image
+        */
+
+        this.load.spritesheet("dude", "assets/test.png",
+        {
+            frameWidth: 32,
+            frameHeight: 48
+        });
+    },
+
+    create: function()
+    {
+        /*
+            Create background image
+        */
+
+        var back = this.add.image(config.width/2, config.height/2, 'testoru').setScale(1, 1);
+        this.toCollect1 = this.physics.add.image(config.width/2 + 100, config.height/2, 'star').setScale(1, 1);
+        this.toCollect2 = this.physics.add.image(config.width/2, config.height/2, 'diamond').setScale(1, 1);
+        this.toCollect3 = this.physics.add.image(config.width/2 - 100, config.height/2, 'mushroom').setScale(1, 1);
+        
+       /*
+            Create player's character and set his position
+        */
+
+       player = this.physics.add.sprite(config.width / 2, (config.height / 2) + 360 , "dude").setScale(1.5, 1.5);
+
+       /*
+            Create players animations
+        */
+
+        this.anims.create({
+            key: "down",
+            frames: this.anims.generateFrameNumbers("dude", {start: 0, end: 0}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "up",
+            frames: this.anims.generateFrameNumbers("dude", {start: 1, end: 1}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "right",
+            frames: this.anims.generateFrameNumbers("dude", {start: 2, end: 2}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "left",
+            frames: this.anims.generateFrameNumbers("dude", {start: 3, end: 3}),
+            repeat: -1
+        });
+        /*
+            create a cursors to keyboard's input
+        */
+
+        cursors = this.input.keyboard.createCursorKeys();
+
+        /*
+            add UI interface text
+        */
+
+        hpString = this.add.text(32, 24, hpText + hp,{fontFamily: '"Times New Roman"' });
+        hpString.setColor('#ec2000');
+        
+        moneyString = this.add.text(120, 24, moneyText + money,{fontFamily: '"Times New Roman"' });
+        moneyString.setColor('#ec2000');
+
+        pcString = this.add.text(200, 24, pcText + pc,{fontFamily: '"Times New Roman"' });
+        pcString.setColor('#ec2000');
+
+        this.physics.add.overlap(player, this.toCollect1, this.collect, null, this);
+        this.physics.add.overlap(player, this.toCollect2, this.collect, null, this);
+        this.physics.add.overlap(player, this.toCollect3, this.collect, null, this);
+        this.player = player;
+
+    },
+    
+    update: function(){
+
+        /*
+            Create player movements
+        */
+
+        player.setVelocity(0, 0);
+        if (gameStarted && !gameFinish) {
+            if (cursors.left.isDown) {
+                player.setVelocityX(-150);
+                player.anims.play("left");
+            }
+            else if (cursors.right.isDown){
+                player.setVelocityX(150);
+                player.anims.play("right");
+            }
+            else if(cursors.up.isDown){
+                player.setVelocityY(-150);
+                player.anims.play("up");
+            }
+            else if(cursors.down.isDown){
+                player.setVelocityY(150);
+                player.anims.play("down");
+            }
+        }
+    },
+
+    collect: function(player, toCollect){
+        if (toCollect === this.toCollect1){pc += 50;}
+        if (toCollect === this.toCollect2){pc += 10;}
+        if (toCollect === this.toCollect3){pc += 1;}
+        pcString.setText('PC = ' + pc);
+        toCollect.disableBody(true, true);
+    }
+});
+
+
 var config = {
-	type: Phaser.AUTO,
-	width: 800,
-	height: 600,
-	physics: {
-		default: 'arcade',
-		arcade: {
-			gravity: { y: 200 }
-		}
-	},
-	scene: {
-		preload: preload,
-		create: create
-	}
-};
-
-var game = new Phaser.Game(config);
-
-function preload ()
-{
-	this.load.setBaseURL('http://labs.phaser.io');
-
-	this.load.image('sky', 'assets/skies/space3.png');
-	this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-	this.load.image('red', 'assets/particles/red.png');
-}
-
-function create ()
-{
-	this.add.image(400, 300, 'sky');
-
-	var particles = this.add.particles('red');
-
-	var emitter = particles.createEmitter({
-		speed: 100,
-		scale: { start: 1, end: 0 },
-		blendMode: 'ADD'
-	});
-
-	var logo = this.physics.add.image(400, 100, 'logo');
-
-	logo.setVelocity(100, 200);
-	logo.setBounce(1, 1);
-	logo.setCollideWorldBounds(true);
-
-	emitter.startFollow(logo);
-}
+    type: Phaser.AUTO,
+    width: 800,
+    height: 800,
+    pixelArt: true,
+    physics: {
+      default: "arcade",
+      arcade: {
+        gravity: { y: 0 },
+        debug: false
+      }
+    },
+    scene: gameplay
+  };
+  
+  var game = new Phaser.Game(config);
