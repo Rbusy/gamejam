@@ -1,12 +1,35 @@
+/*
+    var players
+*/
 
 var player;
+var doctor = [];
+var patient = [];
+var searcher = [];
 
-var hp;
+/*
+    var interface
+*/
 
+var hp = 5;
 var hpString;
-var gameStarted = true;
+var hpText = "HP = ";
 
+var money = 0;
+var moneyString;
+var moneyText = "$ = ";
+
+var pc = 0;
+var pcString;
+var pcText = "PC = ";
+
+/*
+    var gameStat
+*/
+
+var gameStarted = true;
 var gameFinish = false;
+
 
 var gameplay = new Phaser.Class({
     
@@ -78,6 +101,21 @@ var gameplay = new Phaser.Class({
         */
 
         cursors = this.input.keyboard.createCursorKeys();
+
+        /*
+            add UI interface text
+        */
+
+        hpString = this.add.text(32, 24, hpText + hp,{fontFamily: '"Times New Roman"' });
+        hpString.setColor('#ec2000');
+        
+        moneyString = this.add.text(120, 24, moneyText + money,{fontFamily: '"Times New Roman"' });
+        moneyString.setColor('#ec2000');
+
+        pcString = this.add.text(200, 24, pcText + pc,{fontFamily: '"Times New Roman"' });
+        pcString.setColor('#ec2000');
+
+
     },
     
     update: function(){
