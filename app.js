@@ -56,6 +56,13 @@ var gameplay = new Phaser.Class({
             frameWidth: 32,
             frameHeight: 48
         });
+
+        this.load.spritesheet("patientDroite", "droite.png",
+        {
+            frameWidth: 200,
+            frameHeight: 280
+        });
+        
     },
 
     create: function()
@@ -96,6 +103,31 @@ var gameplay = new Phaser.Class({
             frames: this.anims.generateFrameNumbers("dude", {start: 3, end: 3}),
             repeat: -1
         });
+
+        /*
+            df
+        */
+        var patrightAnimation = this.anims.create({
+            key: 'walpatright',
+            frames: this.anims.generateFrameNumbers('patientDroite'),
+            frameRate: 8,
+            repeat: 0
+        });
+
+        var sprite = this.add.sprite(150, 300, 'patientDroite').setScale(0.4);
+      
+        sprite.play('walpatright');
+        
+        this.tweens.add({
+            targets: sprite,
+            x: 650,
+            duration: 1900,
+            ease: 'Linear'
+        });
+   
+         
+
+
         /*
             create a cursors to keyboard's input
         */
