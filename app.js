@@ -108,7 +108,8 @@ var gameplay = new Phaser.Class({
             
             
             patient.push(this.physics.add.sprite(config.width / 2, (config.height / 2) , "dude").setScale(1.5, 1.5));
-            console.log(name);
+            this.physics.add.overlap(this.player, patient, this.soigner, null, this);
+            this.player = player;
             
         }
         /*
@@ -255,6 +256,7 @@ var gameplay = new Phaser.Class({
         pcString = this.add.text(200, 24, pcText + pc,{fontFamily: '"Times New Roman"' });
         pcString.setColor('#ec2000');
 
+        
         this.physics.add.overlap(player, this.toCollect1, this.collect, null, this);
         this.physics.add.overlap(player, this.toCollect2, this.collect, null, this);
         this.physics.add.overlap(player, this.toCollect3, this.collect, null, this);
@@ -297,18 +299,17 @@ var gameplay = new Phaser.Class({
         /*
             Create player mouvements
         */
-        if (cpt > 600 && cpt % 100 == 0)
+        if (patient.length > 6 && cpt % 100 == 0)
         {
             patient[0].disableBody(true, true);
             patient.shift();
         }
         if (cpt % 100 == 0)
         {
-            this.createDude("patient" + cpt);  
+            this.createDude("patient" + cpt); 
         }
         if (cpt == 0)
         {
-            console.log(patient[0]);
             patient[0].disableBody(true, true);
             patient.pop();
         }
@@ -348,16 +349,27 @@ var gameplay = new Phaser.Class({
             }
         }
     },
-    
+
     collect: function(player, toCollect){
         if (toCollect === this.toCollect1){pc += 50;}
         if (toCollect === this.toCollect2){pc += 10;}
         if (toCollect === this.toCollect3){pc += 1;}
         pcString.setText('PC = ' + pc);
         toCollect.disableBody(true, true);
+    },
+    soigner: function(player, actual){
+
+        if (pc > 9)
+        {
+            actual.disableBody(true, true);
+            patient.splice(patient.indexOf(actual),1);
+            
+            
+            pc -= 10;
+            pcString.setText('PC = ' + pc);
+        }
     }
 });
-
 
 var config = {
     type: Phaser.AUTO,
