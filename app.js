@@ -1,7 +1,7 @@
 /*
     var players
 */
-
+var populace = 6;
 var player;
 var doctor = [];
 var patient = [];
@@ -13,17 +13,14 @@ var searcher = [];
 var cptboucle = 0;
 var cpt = 0;
 
-var hp = 5;
-var hpString;
-var hpText = "HP = ";
+var redP = 0;
+var yelP = 0;
+var redPText = "red Pills = ";
+var yelPText = "yellow Pills = ";
 
-var money = 0;
-var moneyString;
+
+var money = 50;
 var moneyText = "$ = ";
-
-var pc = 0;
-var pcString;
-var pcText = "PC = ";
 
 /*
     var gameStat
@@ -32,10 +29,7 @@ var pcText = "PC = ";
 var gameStarted = true;
 var gameFinish = false;
 
-
-var toCollect1;
-var toCollect2;
-var toCollect3;
+var pills = [];
 
 var gameplay = new Phaser.Class({
     
@@ -52,10 +46,10 @@ var gameplay = new Phaser.Class({
         */
 
 
-        this.load.image("testoru", "assets/Salle.png");
+        this.load.image("testoru", "assets/Salle.jpg");
         this.load.image("star", "assets/star.png");
-        this.load.image("diamond", "assets/diamond.png");
-        this.load.image("mushroom", "assets/mushroom.png");
+        this.load.image("red", "assets/redPills.png");
+        this.load.image("yellow", "assets/yellowPills.png");
         /*
             Load player image
         */
@@ -107,7 +101,7 @@ var gameplay = new Phaser.Class({
         {
             
             
-            patient.push(this.physics.add.sprite(config.width / 2, (config.height / 2) , "dude").setScale(1.5, 1.5));
+            patient.push(this.physics.add.sprite((config.width / 2) - 600 , (config.height / 2) - 200 , "dude").setScale(1.5, 1.5));
             this.physics.add.overlap(this.player, patient, this.soigner, null, this);
             this.player = player;
             
@@ -146,20 +140,90 @@ var gameplay = new Phaser.Class({
         
     },
 
+    createPills: function()
+    {
+        if(pills[0] == null)
+        {
+            pills[0] = this.physics.add.image(config.width/2 + 550, config.height/2 - 200, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[0], this.collectY, null, this);
+        }
+        
+
+        if(pills[1] == null)
+        {
+            pills[1] = this.physics.add.image(config.width/2 + 650, config.height/2 - 200, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[1], this.collectY, null, this);
+        }
+        
+        if(pills[2] == null)
+        {
+            pills[2] = this.physics.add.image(config.width/2 + 450, config.height/2 - 200, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[2], this.collectY, null, this);
+        }
+        
+        if(pills[3] == null)
+        {
+            pills[3] = this.physics.add.image(config.width/2 + 550, config.height/2 - 300, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[3], this.collectY, null, this);
+        }
+
+        if(pills[4] == null)
+        {
+            pills[4] = this.physics.add.image(config.width/2 + 550, config.height/2 - 100, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[4], this.collectY, null, this);
+        }
+
+        
+        if(pills[5] == null)
+        {
+            pills[5] = this.physics.add.image(config.width/2, config.height/2 - 200, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[5], this.collectR, null, this);
+        }
+        
+        if(pills[6] == null)
+        {
+            pills[6] = this.physics.add.image(config.width/2 + 100, config.height/2 - 200, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[6], this.collectR, null, this);
+        }
+        if(pills[7] == null)
+        {
+            pills[7] = this.physics.add.image(config.width/2 - 100, config.height/2 - 200, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[7], this.collectR, null, this);
+        }
+
+        if(pills[8] == null)
+        {
+            pills[8] = this.physics.add.image(config.width/2, config.height/2 - 300, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[8], this.collectR, null, this);
+        }
+
+        if(pills[9] == null)
+        {
+            pills[9] = this.physics.add.image(config.width/2, config.height/2 - 100, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[9], this.collectR, null, this);
+        }
+
+        
+        //this.physics.add.overlap(player, this.pills, this.collectY, null, this);
+        
+
+        
+    },
+
     create: function()
     {
+        
         /*
             Create background image
         */
-
+        
         var back = this.add.image(config.width/2, config.height/2, 'testoru').setScale(1, 1);
-        this.toCollect1 = this.physics.add.image(config.width/2 + 100, config.height/2, 'star').setScale(1, 1);
-        this.toCollect2 = this.physics.add.image(config.width/2, config.height/2, 'diamond').setScale(1, 1);
-        this.toCollect3 = this.physics.add.image(config.width/2 - 100, config.height/2, 'mushroom').setScale(1, 1);
+        
         /*
             create a cursors to keyboard's input
         */
         this.createDude("dude");
+        this.createPills();
        /*
             Create player's character and set his position
         */
@@ -246,22 +310,16 @@ var gameplay = new Phaser.Class({
         /*
             add UI interface text
         */
-
-        hpString = this.add.text(32, 24, hpText + hp,{fontFamily: '"Times New Roman"' });
-        hpString.setColor('#ec2000');
+        redPText = this.add.text(32, 24, redPText + redP,{fontFamily: '"Times New Roman"' });
+        redPText.setColor('#ec2000');
         
-        moneyString = this.add.text(120, 24, moneyText + money,{fontFamily: '"Times New Roman"' });
-        moneyString.setColor('#ec2000');
+        moneyText = this.add.text(120, 24, moneyText + money,{fontFamily: '"Times New Roman"' });
+        moneyText.setColor('#ec2000');
 
-        pcString = this.add.text(200, 24, pcText + pc,{fontFamily: '"Times New Roman"' });
-        pcString.setColor('#ec2000');
+        yelPText = this.add.text(200, 24, yelPText + yelP,{fontFamily: '"Times New Roman"' });
+        yelPText.setColor('#ec2000');
 
-        
-        this.physics.add.overlap(player, this.toCollect1, this.collect, null, this);
-        this.physics.add.overlap(player, this.toCollect2, this.collect, null, this);
-        this.physics.add.overlap(player, this.toCollect3, this.collect, null, this);
         this.player = player;
-
     },
     
     moverandom: function(patient, move)
@@ -299,14 +357,18 @@ var gameplay = new Phaser.Class({
         /*
             Create player mouvements
         */
-        if (patient.length > 6 && cpt % 100 == 0)
+        if (patient.length > populace && patient.length != 0 && cpt % 100 == 0)
         {
             patient[0].disableBody(true, true);
             patient.shift();
         }
         if (cpt % 100 == 0)
         {
-            this.createDude("patient" + cpt); 
+            this.createDude("patient" + cpt);
+            money -= 3;
+            moneyText.setText('$ = ' + money);
+
+            this.createPills();
         }
         if (cpt == 0)
         {
@@ -332,49 +394,75 @@ var gameplay = new Phaser.Class({
         player.setVelocity(0, 0);
         if (gameStarted && !gameFinish) {
             if (cursors.left.isDown) {
-                player.setVelocityX(-150);
+                player.setVelocityX(-300);
                 player.anims.play("left");
             }
             else if (cursors.right.isDown){
-                player.setVelocityX(150);
+                player.setVelocityX(300);
                 player.anims.play("right");
             }
             else if(cursors.up.isDown){
-                player.setVelocityY(-150);
+                player.setVelocityY(-300);
                 player.anims.play("up");
             }
             else if(cursors.down.isDown){
-                player.setVelocityY(150);
+                player.setVelocityY(300);
                 player.anims.play("down");
             }
         }
     },
 
-    collect: function(player, toCollect){
-        if (toCollect === this.toCollect1){pc += 50;}
-        if (toCollect === this.toCollect2){pc += 10;}
-        if (toCollect === this.toCollect3){pc += 1;}
-        pcString.setText('PC = ' + pc);
-        toCollect.disableBody(true, true);
+    collectR: function(player, actual){
+        if (redP == 0 && yelP == 0)
+        {
+            redP += 1;
+            redPText.setText('red Pills = ' + redP);
+            pills[pills.indexOf(actual)] = null;
+            
+            actual.disableBody(true, true);
+        }
+        
+    },
+    collectY: function(player, actual){
+        if (redP == 0 && yelP == 0)
+        {
+            yelP += 1;
+            yelPText.setText('yellow Pills = ' + yelP);
+            pills[pills.indexOf(actual)] = null;
+
+            actual.disableBody(true, true);
+        }
     },
     soigner: function(player, actual){
-
-        if (pc > 9)
+        if (redP != 0 || yelP != 0)
         {
             actual.disableBody(true, true);
             patient.splice(patient.indexOf(actual),1);
             
-            
-            pc -= 10;
-            pcString.setText('PC = ' + pc);
+            if (redP != 0)
+            {
+                redP = 0;
+                money += 10;
+                moneyText.setText('$ = ' + money);
+                populace -=2;
+                redPText.setText('red Pills = ' + redP);
+            }
+            if (yelP != 0)
+            {
+                yelP = 0;
+                money += 5;
+                moneyText.setText('$ = ' + money);
+                populace += 2;
+                yelPText.setText('yellow Pills = ' + redP);
+            }
         }
     }
 });
 
 var config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 800,
+    width: 1700,
+    height: 900,
     pixelArt: true,
     physics: {
       default: "arcade",
