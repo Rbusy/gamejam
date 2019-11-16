@@ -59,7 +59,7 @@ var gameplay = new Phaser.Class({
             frameWidth: 32,
             frameHeight: 48
         });
-        this.load.spritesheet("patient", "test.png",
+        this.load.spritesheet("patient", "assets/test.png",
             {
                 frameWidth: 32,
                 frameHeight: 48
@@ -154,8 +154,6 @@ var gameplay = new Phaser.Class({
        /*
             Create player's character and set his position
         */
-
-       player = this.physics.add.sprite(config.width / 2, (config.height / 2) + 360 , "dude").setScale(1.5, 1.5);
 
        /*
             Create players animations
@@ -287,7 +285,7 @@ var gameplay = new Phaser.Class({
         /*
             Create player mouvements
         */
-        if (cpt > 600 && cpt % 100 == 0)
+        if (cpt > 10000 && cpt % 100 == 0)
         {
             patient[0].disableBody(true, true);
             patient.shift();
@@ -302,12 +300,13 @@ var gameplay = new Phaser.Class({
             patient[0].disableBody(true, true);
             patient.pop();
         }
-        
+        player.setCollideWorldBounds(true);
         cptboucle = 0;
         if (cpt % 4 == 0)
         {
             while (cptboucle < patient.length)
             {
+                patient[cptboucle].setCollideWorldBounds(true);
                 this.moverandom(patient[cptboucle], cptboucle );
                 cptboucle++;
             }
