@@ -33,6 +33,10 @@ var gameStarted = true;
 var gameFinish = false;
 
 
+var toCollect1;
+var toCollect2;
+var toCollect3;
+
 var gameplay = new Phaser.Class({
     
     Extends: Phaser.Scene,
@@ -49,7 +53,9 @@ var gameplay = new Phaser.Class({
 
 
         this.load.image("testoru", "assets/Salle.png");
-
+        this.load.image("star", "assets/star.png");
+        this.load.image("diamond", "assets/diamond.png");
+        this.load.image("mushroom", "assets/mushroom.png");
         /*
             Load player image
         */
@@ -146,7 +152,9 @@ var gameplay = new Phaser.Class({
         */
 
         var back = this.add.image(config.width/2, config.height/2, 'testoru').setScale(1, 1);
-        
+        this.toCollect1 = this.physics.add.image(config.width/2 + 100, config.height/2, 'star').setScale(1, 1);
+        this.toCollect2 = this.physics.add.image(config.width/2, config.height/2, 'diamond').setScale(1, 1);
+        this.toCollect3 = this.physics.add.image(config.width/2 - 100, config.height/2, 'mushroom').setScale(1, 1);
         /*
             create a cursors to keyboard's input
         */
@@ -247,6 +255,10 @@ var gameplay = new Phaser.Class({
         pcString = this.add.text(200, 24, pcText + pc,{fontFamily: '"Times New Roman"' });
         pcString.setColor('#ec2000');
 
+        this.physics.add.overlap(player, this.toCollect1, this.collect, null, this);
+        this.physics.add.overlap(player, this.toCollect2, this.collect, null, this);
+        this.physics.add.overlap(player, this.toCollect3, this.collect, null, this);
+        this.player = player;
 
     },
     
@@ -285,7 +297,7 @@ var gameplay = new Phaser.Class({
         /*
             Create player mouvements
         */
-        if (cpt > 10000 && cpt % 100 == 0)
+        if (cpt > 600 && cpt % 100 == 0)
         {
             patient[0].disableBody(true, true);
             patient.shift();
@@ -335,9 +347,15 @@ var gameplay = new Phaser.Class({
                 player.anims.play("down");
             }
         }
-
-
-        }
+    },
+    
+    collect: function(player, toCollect){
+        if (toCollect === this.toCollect1){pc += 50;}
+        if (toCollect === this.toCollect2){pc += 10;}
+        if (toCollect === this.toCollect3){pc += 1;}
+        pcString.setText('PC = ' + pc);
+        toCollect.disableBody(true, true);
+    }
 });
 
 
