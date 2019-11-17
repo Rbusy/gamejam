@@ -19,7 +19,7 @@ var redPText = "red Pills = ";
 var yelPText = "yellow Pills = ";
 
 
-var money = 50;
+var money = 20;
 var moneyText = "$ = ";
 
 /*
@@ -45,7 +45,7 @@ var gameplay = new Phaser.Class({
             Load background image
         */
 
-
+        this.load.image("over", "assets/over.jpg");
         this.load.image("testoru", "assets/Salle.jpg");
         this.load.image("star", "assets/star.png");
         this.load.image("red", "assets/redPills.png");
@@ -393,6 +393,7 @@ var gameplay = new Phaser.Class({
 
     },
 
+    
     update: function(){
 
         /*
@@ -403,18 +404,22 @@ var gameplay = new Phaser.Class({
             patient[0].disableBody(true, true);
             patient.shift();
         }
+        if (money <= 0)
+        {
+            this.add.image(config.width/2, config.height/2, 'over').setScale(0.2, 0.2);
+            
+        }
+
         if (cpt % 100 == 0)
         {
             this.createDude("patient" + cpt);
             money -= 3;
             moneyText.setText('$ = ' + money);
-            if (money <= 0)
-            {
-                
-            }
+            
 
             this.createPills();
         }
+        
         if (cpt == 0)
         {
             patient[0].disableBody(true, true);
@@ -422,7 +427,7 @@ var gameplay = new Phaser.Class({
         }
         player.setCollideWorldBounds(true);
         cptboucle = 0;
-        if (cpt % 12 == 0)
+        if (cpt % 4 == 0)
         {
             while (cptboucle < patient.length)
             {
@@ -520,3 +525,5 @@ var config = {
   };
   
   var game = new Phaser.Game(config);
+
+  
