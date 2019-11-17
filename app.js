@@ -59,9 +59,9 @@ var gameplay = new Phaser.Class({
             frameWidth: 32,
             frameHeight: 48
         });
-        this.load.spritesheet("patient", "assets/test.png",
+        this.load.spritesheet("patient", "assets/testpatient.png",
             {
-                frameWidth: 32,
+                frameWidth: 34,
                 frameHeight: 48
             });
         
@@ -101,8 +101,28 @@ var gameplay = new Phaser.Class({
         {
             
             
-            patient.push(this.physics.add.sprite((config.width / 2) - 600 , (config.height / 2) - 200 , "dude").setScale(1.5, 1.5));
+            patient.push(this.physics.add.sprite((config.width / 2) - 600 , (config.height / 2) - 200 , "patient").setScale(1.5, 1.5));
             this.physics.add.overlap(this.player, patient, this.soigner, null, this);
+            this.anims.create({
+                key: "downP",
+                frames: this.anims.generateFrameNumbers("patient", {start: 0, end: 0}),
+                repeat: -1
+            });
+            this.anims.create({
+                key: "upP",
+                frames: this.anims.generateFrameNumbers("patient", {start: 1, end: 1}),
+                repeat: -1
+            });
+            this.anims.create({
+                key: "rightP",
+                frames: this.anims.generateFrameNumbers("patient", {start: 2, end: 2}),
+                repeat: -1
+            });
+            this.anims.create({
+                key: "leftP",
+                frames: this.anims.generateFrameNumbers("patient", {start: 3, end: 3}),
+                repeat: -1
+            });
             this.player = player;
             
         }
@@ -252,6 +272,27 @@ var gameplay = new Phaser.Class({
             frames: this.anims.generateFrameNumbers("dude", {start: 3, end: 3}),
             repeat: -1
         });
+        
+        this.anims.create({
+            key: "down",
+            frames: this.anims.generateFrameNumbers("patient", {start: 0, end: 0}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "up",
+            frames: this.anims.generateFrameNumbers("patient", {start: 1, end: 1}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "right",
+            frames: this.anims.generateFrameNumbers("patient", {start: 2, end: 2}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "left",
+            frames: this.anims.generateFrameNumbers("patient", {start: 3, end: 3}),
+            repeat: -1
+        });
 
         /*
             Create animation for npc
@@ -332,22 +373,22 @@ var gameplay = new Phaser.Class({
         if (move == 0)
         {
             patient.setVelocityX(-150);
-            patient.anims.play("left");
+            patient.anims.play("leftP");
         }
         if (move == 1)
         {
             patient.setVelocityX(150);
-            patient.anims.play("right");
+            patient.anims.play("rightP");
         }
         if (move == 2)
         {
             patient.setVelocityY(-150);
-            patient.anims.play("up");
+            patient.anims.play("upP");
         }
         if (move == 3)
         {
             patient.setVelocityY(150);
-            patient.anims.play("down");
+            patient.anims.play("downP");
         }
 
     },
@@ -367,6 +408,10 @@ var gameplay = new Phaser.Class({
             this.createDude("patient" + cpt);
             money -= 3;
             moneyText.setText('$ = ' + money);
+            if (money <= 0)
+            {
+                
+            }
 
             this.createPills();
         }
@@ -377,7 +422,7 @@ var gameplay = new Phaser.Class({
         }
         player.setCollideWorldBounds(true);
         cptboucle = 0;
-        if (cpt % 4 == 0)
+        if (cpt % 12 == 0)
         {
             while (cptboucle < patient.length)
             {
