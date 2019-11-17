@@ -41,6 +41,7 @@ var gameplay = new Phaser.Class({
 
     preload: function()
     {
+        this.load.audio('music', 'assets/music.mp3');
         /*
             Load background image
         */
@@ -237,7 +238,8 @@ var gameplay = new Phaser.Class({
         /*
             Create background image
         */
-        
+        var music = this.sound.add('music');
+        music.play();
         var back = this.add.image(config.width/2, config.height/2, 'testoru').setScale(1, 1);
         
         /*
@@ -406,15 +408,15 @@ var gameplay = new Phaser.Class({
             patient.shift();
         }
         
-        if (money <= 0)
+        if (money <= 0 && money > -100)
         {
             this.add.image(config.width/2, config.height/2, 'over').setScale(0.2, 0.2);
-            
+                       money -= 100;
         }
-        if (money <= -10)
+        if (money <= -130 && money > -230)
         {
             this.add.image(config.width/2, config.height/2, 'credit').setScale(0.2, 0.2);
-            
+            money -= 100;
         }
         if (cpt % 100 == 0)
         {
