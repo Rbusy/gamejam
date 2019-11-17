@@ -20,7 +20,7 @@ var yelPText = "yellow Pills = ";
 
 
 var money = 20;
-var moneyText = "$ = ";
+var moneyText = "credit = ";
 
 /*
     var gameStat
@@ -46,6 +46,7 @@ var gameplay = new Phaser.Class({
         */
 
         this.load.image("over", "assets/over.jpg");
+        this.load.image("credit", "assets/credit.jpg");
         this.load.image("testoru", "assets/Salle.jpg");
         this.load.image("star", "assets/star.png");
         this.load.image("red", "assets/redPills.png");
@@ -54,9 +55,9 @@ var gameplay = new Phaser.Class({
             Load player image
         */
 
-        this.load.spritesheet("dude", "assets/test.png",
+        this.load.spritesheet("dude", "assets/chercheur.png",
         {
-            frameWidth: 32,
+            frameWidth: 34,
             frameHeight: 48
         });
         this.load.spritesheet("patient", "assets/testpatient.png",
@@ -404,17 +405,22 @@ var gameplay = new Phaser.Class({
             patient[0].disableBody(true, true);
             patient.shift();
         }
+        
         if (money <= 0)
         {
             this.add.image(config.width/2, config.height/2, 'over').setScale(0.2, 0.2);
             
         }
-
+        if (money <= -10)
+        {
+            this.add.image(config.width/2, config.height/2, 'credit').setScale(0.2, 0.2);
+            
+        }
         if (cpt % 100 == 0)
         {
             this.createDude("patient" + cpt);
             money -= 3;
-            moneyText.setText('$ = ' + money);
+            moneyText.setText('credit = ' + money);
             
 
             this.createPills();
@@ -493,7 +499,7 @@ var gameplay = new Phaser.Class({
             {
                 redP = 0;
                 money += 10;
-                moneyText.setText('$ = ' + money);
+                moneyText.setText('credit = ' + money);
                 populace -=2;
                 redPText.setText('red Pills = ' + redP);
             }
@@ -501,7 +507,7 @@ var gameplay = new Phaser.Class({
             {
                 yelP = 0;
                 money += 5;
-                moneyText.setText('$ = ' + money);
+                moneyText.setText('credit = ' + money);
                 populace += 2;
                 yelPText.setText('yellow Pills = ' + redP);
             }
