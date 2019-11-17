@@ -1,0 +1,36 @@
+{
+  "name": "gamejam",
+  "version": "1.0.0",
+  "main": "GlobalVariables.js",
+  "dependencies": {
+    "audit": "0.0.6",
+    "cookie-signature": "^1.1.0",
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "fix": "0.0.6",
+    "fresh": "^0.5.2",
+    "get": "^1.4.0",
+    "mime": "^2.4.4",
+    "node.js": "0.0.0",
+    "qs": "^6.9.1",
+    "send": "^0.17.1",
+    "socket.io": "^2.3.0",
+    "underscore.string": "^3.3.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rbusy/gamejam.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rbusy/gamejam/issues"
+  },
+  "homepage": "https://github.com/Rbusy/gamejam#readme",
+  "description": ""
+}

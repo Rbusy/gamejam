@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:3000/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>First game</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" media="screen" href="./First game_files/style.css">
+		<script src="./First game_files/phaser.js"></script>
+		<script src="./First game_files/socket.io.js"></script>
+        
+		<script src="./First game_files/GlobalVariables.js"></script>
+		<script src="./First game_files/jquery-1.11.1.js"></script>
+
+		<script>
+			var socket = io.connect('http://localhost:3000');
+            socket.on('msg', function(message) {
+				socket.emit('msg');
+			})
+			socket.emit
+		</script>
+
+
+		<script src="./First game_files/app.js"></script>
+		<script src="./First game_files/client.js"></script>
+    </head>
+    <body>
+				
+				
+				  <ul id="messages"></ul>
+				  <form action="http://localhost:3000/">
+					<input id="m" autocomplete="off"><button>Send</button>
+				  </form>
+				
+        
+<canvas width="800" height="800" style="image-rendering: pixelated;"></canvas></body></html>

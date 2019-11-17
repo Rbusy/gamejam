@@ -6,22 +6,31 @@
         <title>First game</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
-        <script  src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.18.1/phaser.js"></script>
+		<script  src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.18.1/phaser.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
         
-        <script src="GlobalVariables.js"></script>
-        <script src="app.js"></script>
+		<script src="GlobalVariables.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+		<script>
+			var socket = io.connect('http://localhost:3000');
+            socket.on('msg', function(message) {
+				socket.emit('msg');
+			})
+			socket.emit
+		</script>
+
+
+		<script src="app.js"></script>
+		<script src="client.js"></script>
     </head>
     <body>
-        <!-- <script>
-            var config = {
-                width: 800,
-                height: 800,
-                type: Phaser.AUTO,
-                scene: myGame.scene
-
-            };
-            
-            var game = new Phaser.Game(config); -->
+				</head>
+				<body>
+				  <ul id="messages"></ul>
+				  <form action="">
+					<input id="m" autocomplete="off" /><button>Send</button>
+				  </form>
+				</body>
         </script>
-    </body>
 </html>
