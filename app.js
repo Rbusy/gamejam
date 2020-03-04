@@ -1,7 +1,7 @@
 /*
     var players
 */
-
+var populace = 6;
 var player;
 var doctor = [];
 var patient = [];
@@ -10,18 +10,17 @@ var searcher = [];
 /*
     var interface
 */
+var cptboucle = 0;
+var cpt = 0;
 
-var hp = 5;
-var hpString;
-var hpText = "HP = ";
+var redP = 0;
+var yelP = 0;
+var redPText = "red Pills = ";
+var yelPText = "yellow Pills = ";
 
-var money = 0;
-var moneyString;
-var moneyText = "$ = ";
 
-var pc = 0;
-var pcString;
-var pcText = "PC = ";
+var money = 20;
+var moneyText = "credit = ";
 
 /*
     var gameStat
@@ -30,6 +29,7 @@ var pcText = "PC = ";
 var gameStarted = true;
 var gameFinish = false;
 
+var pills = [];
 
 var gameplay = new Phaser.Class({
     
@@ -41,22 +41,97 @@ var gameplay = new Phaser.Class({
 
     preload: function()
     {
+        this.load.audio('music', 'assets/music.mp3');
         /*
             Load background image
         */
 
-        this.load.image("testoru", "assets/Salle.png");
-
+        this.load.image("over", "assets/over.jpg");
+        this.load.image("credit", "assets/credit.jpg");
+        this.load.image("testoru", "assets/Salle.jpg");
+        this.load.image("star", "assets/star.png");
+        this.load.image("red", "assets/redPills.png");
+        this.load.image("yellow", "assets/yellowPills.png");
         /*
             Load player image
         */
 
-        this.load.spritesheet("dude", "assets/test.png",
+        this.load.spritesheet("dude", "assets/chercheur.png",
         {
-            frameWidth: 32,
+            frameWidth: 34,
             frameHeight: 48
         });
+        this.load.spritesheet("patient", "assets/testpatient.png",
+            {
+                frameWidth: 34,
+                frameHeight: 48
+            });
+        
+    },
 
+    createDude: function(name)
+    {
+        
+        /*
+            Create player's character and set his position
+        */
+        if (name == "dude")
+        {
+            player = this.physics.add.sprite(config.width / 2, (config.height / 2) + 360 , name).setScale(1.5, 1.5);
+            this.anims.create({
+                key: "down",
+                frames: this.anims.generateFrameNumbers(name, {start: 0, end: 0}),
+                repeat: -1
+            });
+            this.anims.create({
+                key: "up",
+                frames: this.anims.generateFrameNumbers(name, {start: 1, end: 1}),
+                repeat: -1
+            });
+            this.anims.create({
+                key: "right",
+                frames: this.anims.generateFrameNumbers(name, {start: 2, end: 2}),
+                repeat: -1
+            });
+            this.anims.create({
+                key: "left",
+                frames: this.anims.generateFrameNumbers(name, {start: 3, end: 3}),
+                repeat: -1
+            });
+        }
+        else
+        {
+            
+            
+            patient.push(this.physics.add.sprite((config.width / 2) - 600 , (config.height / 2) - 200 , "patient").setScale(1.5, 1.5));
+            this.physics.add.overlap(this.player, patient, this.soigner, null, this);
+            this.anims.create({
+                key: "downP",
+                frames: this.anims.generateFrameNumbers("patient", {start: 0, end: 0}),
+                repeat: -1
+            });
+            this.anims.create({
+                key: "upP",
+                frames: this.anims.generateFrameNumbers("patient", {start: 1, end: 1}),
+                repeat: -1
+            });
+            this.anims.create({
+                key: "rightP",
+                frames: this.anims.generateFrameNumbers("patient", {start: 2, end: 2}),
+                repeat: -1
+            });
+            this.anims.create({
+                key: "leftP",
+                frames: this.anims.generateFrameNumbers("patient", {start: 3, end: 3}),
+                repeat: -1
+            });
+            this.player = player;
+            
+        }
+        /*
+            Create players animations
+        */
+       
         /* 
             Load patient images
         */
@@ -87,19 +162,94 @@ var gameplay = new Phaser.Class({
         
     },
 
+    createPills: function()
+    {
+        if(pills[0] == null)
+        {
+            pills[0] = this.physics.add.image(config.width/2 + 550, config.height/2 - 200, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[0], this.collectY, null, this);
+        }
+        
+
+        if(pills[1] == null)
+        {
+            pills[1] = this.physics.add.image(config.width/2 + 650, config.height/2 - 200, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[1], this.collectY, null, this);
+        }
+        
+        if(pills[2] == null)
+        {
+            pills[2] = this.physics.add.image(config.width/2 + 450, config.height/2 - 200, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[2], this.collectY, null, this);
+        }
+        
+        if(pills[3] == null)
+        {
+            pills[3] = this.physics.add.image(config.width/2 + 550, config.height/2 - 300, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[3], this.collectY, null, this);
+        }
+
+        if(pills[4] == null)
+        {
+            pills[4] = this.physics.add.image(config.width/2 + 550, config.height/2 - 100, 'yellow').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[4], this.collectY, null, this);
+        }
+
+        
+        if(pills[5] == null)
+        {
+            pills[5] = this.physics.add.image(config.width/2, config.height/2 - 200, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[5], this.collectR, null, this);
+        }
+        
+        if(pills[6] == null)
+        {
+            pills[6] = this.physics.add.image(config.width/2 + 100, config.height/2 - 200, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[6], this.collectR, null, this);
+        }
+        if(pills[7] == null)
+        {
+            pills[7] = this.physics.add.image(config.width/2 - 100, config.height/2 - 200, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[7], this.collectR, null, this);
+        }
+
+        if(pills[8] == null)
+        {
+            pills[8] = this.physics.add.image(config.width/2, config.height/2 - 300, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[8], this.collectR, null, this);
+        }
+
+        if(pills[9] == null)
+        {
+            pills[9] = this.physics.add.image(config.width/2, config.height/2 - 100, 'red').setScale(0.3, 0.3);
+            this.physics.add.overlap(player, pills[9], this.collectR, null, this);
+        }
+
+        
+        //this.physics.add.overlap(player, this.pills, this.collectY, null, this);
+        
+
+        
+    },
+
     create: function()
     {
+        
         /*
             Create background image
         */
-
+        var music = this.sound.add('music');
+        music.play();
         var back = this.add.image(config.width/2, config.height/2, 'testoru').setScale(1, 1);
         
+        /*
+            create a cursors to keyboard's input
+        */
+        this.createDude("dude");
+        this.createPills();
        /*
             Create player's character and set his position
         */
-
-       player = this.physics.add.sprite(config.width / 2, (config.height / 2) + 360 , "dude").setScale(1.5, 1.5);
 
        /*
             Create players animations
@@ -123,6 +273,27 @@ var gameplay = new Phaser.Class({
         this.anims.create({
             key: "left",
             frames: this.anims.generateFrameNumbers("dude", {start: 3, end: 3}),
+            repeat: -1
+        });
+        
+        this.anims.create({
+            key: "down",
+            frames: this.anims.generateFrameNumbers("patient", {start: 0, end: 0}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "up",
+            frames: this.anims.generateFrameNumbers("patient", {start: 1, end: 1}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "right",
+            frames: this.anims.generateFrameNumbers("patient", {start: 2, end: 2}),
+            repeat: -1
+        });
+        this.anims.create({
+            key: "left",
+            frames: this.anims.generateFrameNumbers("patient", {start: 3, end: 3}),
             repeat: -1
         });
 
@@ -183,54 +354,173 @@ var gameplay = new Phaser.Class({
         /*
             add UI interface text
         */
-
-        hpString = this.add.text(32, 24, hpText + hp,{fontFamily: '"Times New Roman"' });
-        hpString.setColor('#ec2000');
+        redPText = this.add.text(32, 24, redPText + redP,{fontFamily: '"Times New Roman"' });
+        redPText.setColor('#ec2000');
         
-        moneyString = this.add.text(120, 24, moneyText + money,{fontFamily: '"Times New Roman"' });
-        moneyString.setColor('#ec2000');
+        moneyText = this.add.text(120, 24, moneyText + money,{fontFamily: '"Times New Roman"' });
+        moneyText.setColor('#ec2000');
 
-        pcString = this.add.text(200, 24, pcText + pc,{fontFamily: '"Times New Roman"' });
-        pcString.setColor('#ec2000');
+        yelPText = this.add.text(200, 24, yelPText + yelP,{fontFamily: '"Times New Roman"' });
+        yelPText.setColor('#ec2000');
 
+        this.player = player;
+    },
+    
+    moverandom: function(patient, move)
+    {
+        /*
+            move patient randomly
+         */
+        var move = Math.floor(Math.random() * Math.floor(4));
+        
+        if (move == 0)
+        {
+            patient.setVelocityX(-150);
+            patient.anims.play("leftP");
+        }
+        if (move == 1)
+        {
+            patient.setVelocityX(150);
+            patient.anims.play("rightP");
+        }
+        if (move == 2)
+        {
+            patient.setVelocityY(-150);
+            patient.anims.play("upP");
+        }
+        if (move == 3)
+        {
+            patient.setVelocityY(150);
+            patient.anims.play("downP");
+        }
 
     },
+
     
     update: function(){
 
         /*
             Create player mouvements
         */
+        if (patient.length > populace && patient.length != 0 && cpt % 100 == 0)
+        {
+            patient[0].disableBody(true, true);
+            patient.shift();
+        }
+        
+        if (money <= 0 && money > -100)
+        {
+            this.add.image(config.width/2, config.height/2, 'over').setScale(0.2, 0.2);
+                       money -= 100;
+        }
+        if (money <= -130 && money > -230)
+        {
+            this.add.image(config.width/2, config.height/2, 'credit').setScale(0.2, 0.2);
+            money -= 100;
+        }
+        if (cpt % 100 == 0)
+        {
+            this.createDude("patient" + cpt);
+            money -= 3;
+            moneyText.setText('credit = ' + money);
+            
 
+            this.createPills();
+        }
+        
+        if (cpt == 0)
+        {
+            patient[0].disableBody(true, true);
+            patient.pop();
+        }
+        player.setCollideWorldBounds(true);
+        cptboucle = 0;
+        if (cpt % 4 == 0)
+        {
+            while (cptboucle < patient.length)
+            {
+                patient[cptboucle].setCollideWorldBounds(true);
+                this.moverandom(patient[cptboucle], cptboucle );
+                cptboucle++;
+            }
+        }
+        cpt++;
+
+        /*
+            key event
+        */
         player.setVelocity(0, 0);
         if (gameStarted && !gameFinish) {
             if (cursors.left.isDown) {
-                player.setVelocityX(-150);
+                player.setVelocityX(-300);
                 player.anims.play("left");
             }
             else if (cursors.right.isDown){
-                player.setVelocityX(150);
+                player.setVelocityX(300);
                 player.anims.play("right");
             }
             else if(cursors.up.isDown){
-                player.setVelocityY(-150);
+                player.setVelocityY(-300);
                 player.anims.play("up");
             }
             else if(cursors.down.isDown){
-                player.setVelocityY(150);
+                player.setVelocityY(300);
                 player.anims.play("down");
             }
         }
+    },
 
-
+    collectR: function(player, actual){
+        if (redP == 0 && yelP == 0)
+        {
+            redP += 1;
+            redPText.setText('red Pills = ' + redP);
+            pills[pills.indexOf(actual)] = null;
+            
+            actual.disableBody(true, true);
         }
-});
+        
+    },
+    collectY: function(player, actual){
+        if (redP == 0 && yelP == 0)
+        {
+            yelP += 1;
+            yelPText.setText('yellow Pills = ' + yelP);
+            pills[pills.indexOf(actual)] = null;
 
+            actual.disableBody(true, true);
+        }
+    },
+    soigner: function(player, actual){
+        if (redP != 0 || yelP != 0)
+        {
+            actual.disableBody(true, true);
+            patient.splice(patient.indexOf(actual),1);
+            
+            if (redP != 0)
+            {
+                redP = 0;
+                money += 10;
+                moneyText.setText('credit = ' + money);
+                populace -=2;
+                redPText.setText('red Pills = ' + redP);
+            }
+            if (yelP != 0)
+            {
+                yelP = 0;
+                money += 5;
+                moneyText.setText('credit = ' + money);
+                populace += 2;
+                yelPText.setText('yellow Pills = ' + redP);
+            }
+        }
+    }
+});
 
 var config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 800,
+    width: 1700,
+    height: 900,
     pixelArt: true,
     physics: {
       default: "arcade",
@@ -243,3 +533,5 @@ var config = {
   };
   
   var game = new Phaser.Game(config);
+
+  
